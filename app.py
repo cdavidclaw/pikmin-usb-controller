@@ -279,6 +279,14 @@ class App(tk.Tk):
         self.worker_running = True
         self.msg_queue = queue.Queue()
         
+        # Colors
+        self.green = "#34C759"
+        self.orange = "#FF9F0A"
+        self.red = "#FF3B30"
+        self.blue = "#0a84ff"
+        self.gray = "#3d3d3d"
+        self.fg2 = "#8e8e93"
+        
         self._build_ui()
         self._check_device()
         self._start_worker()
@@ -467,7 +475,7 @@ class App(tk.Tk):
             devices = get_xcode_devices()
             if devices:
                 self.udid = devices[0]['udid']
-                self.dev_label.config(text=f"  🔌 {devices[0]['name']}", fg=green)
+                self.dev_label.config(text=f"  🔌 {devices[0]['name']}", fg=self.green)
                 self.dev_frame.config(bg="#1d3d1d")
                 self.dev_label.config(bg="#1d3d1d")
                 self._log(f"設備: {devices[0]['name']}")
@@ -482,14 +490,14 @@ class App(tk.Tk):
                 udid = get_idevice_udid()
                 if udid:
                     self.udid = udid
-                    self.dev_label.config(text=f"  🔌 iPhone ({udid[:8]})", fg=orange)
+                    self.dev_label.config(text=f"  🔌 iPhone ({udid[:8]})", fg=self.orange)
                     self._log(f"找到設備 (idevice): {udid}")
                 else:
-                    self.dev_label.config(text="  ⚠️ 未找到設備", fg=red)
+                    self.dev_label.config(text="  ⚠️ 未找到設備", fg=self.red)
                     self.dev_frame.config(bg="#3d1d1d")
                     self.dev_label.config(bg="#3d1d1d")
         else:
-            self.dev_label.config(text=f"  ❌ {msg}", fg=red)
+            self.dev_label.config(text=f"  ❌ {msg}", fg=self.red)
             self.dev_frame.config(bg="#3d1d1d")
             self.dev_label.config(bg="#3d1d1d")
             self._log(f"Xcode 問題: {msg}")
@@ -520,8 +528,8 @@ class App(tk.Tk):
 
     def _start(self):
         engine.start()
-        self.start_btn.config(state="disabled", bg=gray, fg=fg2)
-        self.stop_btn.config(state="normal", bg=red, fg=fg)
+        self.start_btn.config(state="disabled", bg=self.gray, fg=self.fg2)
+        self.stop_btn.config(state="normal", bg=self.red, fg="#ffffff")
         if self.udid:
             ok, _ = engine.apply_location(self.udid, force=True)
             if ok:
@@ -533,8 +541,8 @@ class App(tk.Tk):
 
     def _stop(self):
         engine.stop()
-        self.start_btn.config(state="normal", bg=green, fg=fg)
-        self.stop_btn.config(state="disabled", bg=gray, fg=fg2)
+        self.start_btn.config(state="normal", bg=self.green, fg="#ffffff")
+        self.stop_btn.config(state="disabled", bg=self.gray, fg=self.fg2)
         self._log("停止")
 
     def _reset(self):
